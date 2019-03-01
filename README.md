@@ -7,6 +7,8 @@ This application enables users to get the customers' ratings on restaurants and 
 
 ### Installation
 
-This project makes use of the jQuery and jQueryUI CDN links.
+This project makes use of the [jQuery](https://jquery.com/) v3.3.1 and [jQueryUI](https://jqueryui.com/) v1.7+ CDN links.
 
-To use the project all you need to do is open the `FoodHygieneRatings.html` with your favorite browser.
+If you are using custom downloads for [jQuery](https://jquery.com/) and [jQueryUI](https://jqueryui.com/) then the above version requirements must be followed respectively.
+
+To use the project, all you need to do, is open the `FoodHygieneRatings.html` with your favorite browser.
