@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Food Hygiene Ratings</title> <!-- Title of the page -->
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+
+  <style>
+    #top-heading, form {
+      text-align: center;
+      color: #0085bd;
+      font-family: "proxima-nova", Arial, "Lucida Grande", sans-serif;
+    }
+
+    #businesses {
+      clear: both;
+      margin: 0 auto;
+      font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+      border-collapse: collapse;
+      table-layout: auto;
+      width: 90%;
+    }
+
+    #businesses td, #businesses th {
+      border: 1px solid #ddd;
+      padding: 0.4em;
+    }
+
+    #businesses th {
+      padding-top: 12px;
+      padding-bottom: 12px;
+      text-align: center;
+      background-color: #0085bd;
+      color: white;
+    }
+
+    #businesses td:last-child {text-align: center;}
+
+    #businesses tr:nth-child(even){background-color: #f2f2f2;}
+
+    #businesses tr:hover {background-color: #ddd;}
+
+    .btn-group .pageButtons {
+      background-color: #454545; /* Gray */
+      border: 1px solid #454545;
+      color: white;
+      padding: 0.2em 0.3em;
+      border-radius: 2px;
+  		margin: 0.1em;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      cursor: pointer;
+      float: left;
+    }
+
+    .btn-group .pageButtons:not(:last-child) {
+      border-right: none; /* Prevent double borders */
+    }
+
+    .btn-group .pageButtons:hover {
+      background-color: #0085bd;
+    }
+
+    #pages {
+      text-align: left;
+      color: #000;
+      font-family: "proxima-nova", Arial, "Lucida Grande", sans-serif;
+      font-size: normal;
+    }
+
+    #term {
+      padding: 0.2em 0.3em;
+      border-radius: 2px;
+  		margin: 0.1em;
+    }
+
+    #search, .rating {
+      background-color: #454545; /* Gray */
+      border: 1px solid #454545;
+      color: white;
+      padding: 0.2em 0.2em;
+      border-radius: 2px;
+  		margin: 0.1em;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .rating {
+      width: 80%;
+      background-color: #999999; /* Gray */
+      border: 1px solid #999999;
+      color: white;
+      font-weight: bold;
+    }
+
+    form {
+      padding-bottom: 4em;
+    }
+  </style>
+
+  <script>
+
+  $( function() {  // When the document is ready.
+    // Begin Task 1.1  [Retrieving the First Page of Results When the Page Loads]  // ####################################################################
+    $.get("https://www.cs.kent.ac.uk/people/staff/sm951/co539/assessment2/hygiene.php", { operation:"get", page:1 }, function(data) {
+
+      $("table").append("<tr><th>Name</th><th>Address</th><th>Hygiene</th><th>Rating</th></tr>")
+
+      $.each(data, function(key, value) {
+        $("table").append("<tr><td>" + value.name + "</td><td>" + value.addressLine + "</td><td>" + value.hygieneRating + "</td><td><button class='rating'>Get rating</button></td></tr>");
+      })
+
+    }, "json");
+    // End Task 1.1  // ##################################################################################################################################
+
+    // Begin Task 1.2  [A Basic Paginator]  // ############################################################################################################
+    $.get("https://www.cs.kent.ac.uk/people/staff/sm951/co539/assessment2/hygiene.php", { operation:"pages" }, function(data) {
+      // Adding buttons for pagination functionality
+      // edit this piece of code
+      $("#top-heading").html(function() {
+        $(this).after("<div id='pages'>Pages: </div>");
+        for (var i = 1; i <= data.pages; i++) {
+          $("#pages").append("<div class='btn-group'><button class='pageButtons'>" + i + "</button></div>");
+        }
+        $("table").before("<br><br>");
+      });
+
+      // Whenever a particular button is clicked - the table is emptied and new data is appended to the table.
+      $("button").each(function(index) {
+        $(this).click(function() {
+          // empty the results table // ".remove" ".empty"
+          $("table").empty()
+          // perform an AJAX request
+          $.get("https://www.cs.kent.ac.uk/people/staff/sm951/co539/assessment2/hygiene.php", { operation:"get", page:$(this).text() }, function(data) {
+            // Add headings to the table
+            $("table").append("<tr><th>Business</th><th>Address</th><th>Hygiene</th><th>Date</th><th>Rating</th></tr>");
+            // Add data to the table
+            $.each(data, function(key, value) {
+              $("table").append("<tr><td>" + value.name + "</td><td>" + value.addressLine + "</td><td>" + value.hygieneRating + "</td><td>" + value.ratingDate + "</td><td><button class='rating'>Get rating</button></td></tr>");
+              // button that allows the user to retrieve the customers’ ratings for the business in that row // implemented above // From Task 2.1
+            });
+          }, "json"); // retrieve data in JSON format
+        });
+      });
+
+    });
+    // End Task 1.2  [A Basic Paginator]  // #############################################################################################################
+
+    // Begin Task 2.1 [Retrieving the Customer Rating when Requested by the User]  // ####################################################################
+    // var rochester = ["ME1"] ;  // ME2 , ME3
+    // var chatham = ["ME4"] ; // ME5
+    // var gillingham = ["ME7"] ; // ME8
+    var me1 = "Rochester" , me4 = "Chatham", me7 = "Gillingham" ;
+
+    // functionality for a button that allows the user to retrieve the customers' ratings when clicked
+    $("table").on("click", ".rating", function() {
+
+      var nameLookup = $(this).parent().parent().find(":first").text();  // business name to search for
+      var aLookup = $(this).parent().parent().find(":first").next().text();  // address to search for
+      var address = $(this).parent().parent().find(":first").next().text();
+
+      $.get("https://www.cs.kent.ac.uk/people/staff/sm951/co539/assessment2/rating.php", { name:nameLookup }, function(data) {
+
+        // Do the following for an empty Array
+        if (data.length == 0) { alert("There is no business matching the name: " + nameLookup + "."); }
+        else {
+          if (data.length == 1) {
+            alert("The customer rating for the business, " + nameLookup + ": " + data[0].rating);
+          }
+          else {
+            data.forEach(function(value) {
+
+              if (value.rating == null) { alert("There is no customer rating for the business" + nameLookup + "."); return false ;  }
+
+              if (aLookup.includes("ME1") || aLookup.includes("ME2") || aLookup.includes("ME3")) { aLookup = aLookup.slice(0, aLookup.length - 9) + ", " + me1 ; }
+              if (aLookup.includes(value.vicinity)) {
+                alert("The customer rating for the business, " + nameLookup + ": " + value.rating); return false ;
+              }
+
+              if (aLookup.includes("ME4") || aLookup.includes("ME5")) { aLookup = aLookup.slice(0, aLookup.length - 9) + ", " + me4 ; }
+              if (aLookup.includes(value.vicinity)) {
+                alert("The customer rating for the business, " + nameLookup + ": " + value.rating); return false ;
+              }
+
+              if (aLookup.includes("ME7") || aLookup.includes("ME8")) { aLookup = aLookup.slice(0, aLookup.length - 9) + ", " + me7 ; }
+              if (aLookup.includes(value.vicinity) && aLookup.search(value.vicinity)) {
+                alert("The customer rating for the business, " + nameLookup + ": " + value.rating); return false ;
+              }
+              else {
+                if (address.includes(value.vicinity.substring(0, address.length - me7.length))) { alert("The customer rating for the business, " + nameLookup + ": " + value.rating); return false ; }
+              }
+
+            });
+          }
+        }
+
+      }, "json");
+    });
+    // End Task 2.1 [Retrieving the Customer Rating when Requested by the User]  // ##################################################################
+
+    // Begin Task 3.1  [Search Functionality with Autocomplete - Add a search input with Autocomplete] // ############################################
+    var availableBusinesses = [ "Beijing Inn", "Kings Kitchen", "Taj Cuisine", "Villagio" ];  // Pre-defined array of autocomplete tags
+    var businessNamesToAdd = [];  // Temporary array to store autocomplete tags for extending the pre-defined array with previous search information
+
+    $("#term").autocomplete({
+      source: availableBusinesses
+    });
+
+    // what happens when the user clicks the search button //
+    $("#search").click( function() {
+
+      $("table").empty()
+      // perform an AJAX request
+      $.get("https://www.cs.kent.ac.uk/people/staff/sm951/co539/assessment2/hygiene.php", { operation:"search", name:$("#term").val() }, function(data) {
+
+        $("table").append("<tr><th>Business</th><th>Address</th><th>Hygiene</th><th>Date</th><th>Rating</th></tr>");
+
+        $.each(data, function(key, value) {
+          $("table").append("<tr><td>" + value.name + "</td><td>" + value.addressLine + "</td><td>" + value.hygieneRating + "</td><td>" + value.ratingDate + "</td><td><button class='rating'>Get rating</button></td></tr>");
+          // add the retrieved business names to the temporary array for later addition to the autocomplete array
+          businessNamesToAdd.push(value.name);
+        });
+
+        for (var k = 0; k < businessNamesToAdd.length; k++) {
+          if ($.inArray(businessNamesToAdd[k], availableBusinesses) == -1 ) { // avoiding duplicates
+            // let the array of autocomplete tags be extended with previous search information
+            // add the value to array
+            availableBusinesses.push(businessNamesToAdd[k]);
+          }
+        }
+        availableBusinesses.sort(); // sorting the array
+
+      }, "json");
+
+      $("#pages, .pageButtons").hide(); // Hide the buttons as there is only 20 businesses returned at a time
+
+    });
+    // End Task 3.1  [Search Functionality with Autocomplete - Add a search input with Autocomplete] // ############################################
+
+  }); // End of ready action
+  </script>
+
+</head>
+
+<body>
+  <h1 id="top-heading">Hygiene Ratings for Restaurants in Medway</h1>
+
+  <table id="businesses"></table>
+
+  <br>
+
+  <form>
+    Business Name: <input id="term" type="text" name="searchTerm" value="">
+    <input id="search" type="button" name="" value="Search">
+  </form>
+
+</body>
+
+</html>
