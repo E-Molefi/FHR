@@ -1,0 +1,104 @@
+#top-heading,
+form {
+  text-align: center;
+  color: #0085bd;
+  font-family: "proxima-nova", Arial, "Lucida Grande", sans-serif;
+}
+
+#businesses {
+  clear: both;
+  margin: 0 auto;
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  table-layout: auto;
+  width: 90%;
+}
+
+#businesses td,
+#businesses th {
+  border: 1px solid #ddd;
+  padding: 0.4em;
+}
+
+#businesses th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: center;
+  background-color: #0085bd;
+  color: white;
+}
+
+#businesses td:last-child {
+  text-align: center;
+}
+
+#businesses tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+#businesses tr:hover {
+  background-color: #ddd;
+}
+
+.btn-group .pageButtons {
+  background-color: #454545; /* Gray */
+  border: 1px solid #454545;
+  color: white;
+  padding: 0.2em 0.3em;
+  border-radius: 2px;
+  margin: 0.1em;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+  float: left;
+}
+
+.btn-group .pageButtons:not(:last-child) {
+  border-right: none; /* Prevent double borders */
+}
+
+.btn-group .pageButtons:hover {
+  background-color: #0085bd;
+}
+
+#pages {
+  text-align: left;
+  color: #000;
+  font-family: "proxima-nova", Arial, "Lucida Grande", sans-serif;
+  font-size: normal;
+}
+
+#term {
+  padding: 0.2em 0.3em;
+  border-radius: 2px;
+  margin: 0.1em;
+}
+
+#search,
+.rating {
+  background-color: #454545; /* Gray */
+  border: 1px solid #454545;
+  color: white;
+  padding: 0.2em 0.2em;
+  border-radius: 2px;
+  margin: 0.1em;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.rating {
+  width: 80%;
+  background-color: #999999; /* Gray */
+  border: 1px solid #999999;
+  color: white;
+  font-weight: bold;
+}
+
+form {
+  padding-bottom: 4em;
+}
