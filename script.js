@@ -116,9 +116,7 @@ $(function() {
       function(data) {
         // Do the following for an empty Array
         if (data.length == 0) {
-          alert(
-            "There is no business matching the name: " + nameLookup + "."
-          );
+          alert("There is no business matching the name: " + nameLookup + ".");
         } else {
           if (data.length == 1) {
             alert(
@@ -143,8 +141,7 @@ $(function() {
                 aLookup.includes("ME2") ||
                 aLookup.includes("ME3")
               ) {
-                aLookup =
-                  aLookup.slice(0, aLookup.length - 9) + ", " + me1;
+                aLookup = aLookup.slice(0, aLookup.length - 9) + ", " + me1;
               }
               if (aLookup.includes(value.vicinity)) {
                 alert(
@@ -157,8 +154,7 @@ $(function() {
               }
 
               if (aLookup.includes("ME4") || aLookup.includes("ME5")) {
-                aLookup =
-                  aLookup.slice(0, aLookup.length - 9) + ", " + me4;
+                aLookup = aLookup.slice(0, aLookup.length - 9) + ", " + me4;
               }
               if (aLookup.includes(value.vicinity)) {
                 alert(
@@ -171,8 +167,7 @@ $(function() {
               }
 
               if (aLookup.includes("ME7") || aLookup.includes("ME8")) {
-                aLookup =
-                  aLookup.slice(0, aLookup.length - 9) + ", " + me7;
+                aLookup = aLookup.slice(0, aLookup.length - 9) + ", " + me7;
               }
               if (
                 aLookup.includes(value.vicinity) &&
@@ -188,10 +183,7 @@ $(function() {
               } else {
                 if (
                   address.includes(
-                    value.vicinity.substring(
-                      0,
-                      address.length - me7.length
-                    )
+                    value.vicinity.substring(0, address.length - me7.length)
                   )
                 ) {
                   alert(
@@ -221,17 +213,17 @@ $(function() {
   ]; // Pre-defined array of autocomplete tags
   var businessNamesToAdd = []; // Temporary array to store autocomplete tags for extending the pre-defined array with previous search information
 
-  $("#term").autocomplete({
+  $("#business-tags").autocomplete({
     source: availableBusinesses
   });
 
   // what happens when the user clicks the search button //
-  $("#search").click(function() {
+  $("#search-btn").click(function() {
     $("table").empty();
     // perform an AJAX request
     $.get(
       "https://www.cs.kent.ac.uk/people/staff/sm951/co539/assessment2/hygiene.php",
-      { operation: "search", name: $("#term").val() },
+      { operation: "search", name: $("#business-tags").val() },
       function(data) {
         $("table").append(
           "<tr><th>Business</th><th>Address</th><th>Hygiene</th><th>Date</th><th>Rating</th></tr>"
@@ -254,9 +246,7 @@ $(function() {
         });
 
         for (var k = 0; k < businessNamesToAdd.length; k++) {
-          if (
-            $.inArray(businessNamesToAdd[k], availableBusinesses) == -1
-          ) {
+          if ($.inArray(businessNamesToAdd[k], availableBusinesses) == -1) {
             // avoiding duplicates
             // let the array of autocomplete tags be extended with previous search information
             // add the value to array

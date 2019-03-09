@@ -1,22 +1,29 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
     <!-- Title of the page -->
     <title>Food Hygiene Ratings</title>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
     <link
       rel="stylesheet"
       href="https://code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css"
     />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 
-    <link rel="stylesheet" type="text/css" media="screen" href="style.css">
+    <!-- Linking to a custom css file for the web application -->
+    <link rel="stylesheet" type="text/css" media="screen" href="style.css" />
+    <!-- Linking to a custom script for the application -->
     <script src="script.js"></script>
-    
   </head>
 
   <body>
+    <!-- Heading of the application -->
     <h1 id="top-heading">Hygiene Ratings for Restaurants in Medway</h1>
 
     <table id="businesses"></table>
@@ -24,8 +31,11 @@
     <br />
 
     <form>
-      Business Name: <input id="term" type="text" name="searchTerm" value="" />
-      <input id="search" type="button" name="" value="Search" />
+      <div class="ui-widget">
+        <label for="business-tags">Business Name: </label>
+        <input id="business-tags" name="searchTerm" value="" />
+        <input id="search-btn" type="button" value="Search" />
+      </div>
     </form>
   </body>
 </html>

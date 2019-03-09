@@ -49,10 +49,9 @@ form {
   margin: 0.1em;
   text-align: center;
   text-decoration: none;
-  display: inline-block;
+  float: left;
   font-size: 16px;
   cursor: pointer;
-  float: left;
 }
 
 .btn-group .pageButtons:not(:last-child) {
@@ -70,13 +69,13 @@ form {
   font-size: normal;
 }
 
-#term {
+#business-tags {
   padding: 0.2em 0.3em;
   border-radius: 2px;
   margin: 0.1em;
 }
 
-#search,
+#search-btn,
 .rating {
   background-color: #454545; /* Gray */
   border: 1px solid #454545;
