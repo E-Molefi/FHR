@@ -206,21 +206,19 @@ $(function() {
 
   // [Search Functionality with Autocomplete - Add a search input with Autocomplete] // ############################################
 
-var names = [];
-var ava = [];
-var source = null;
-
-// Implementation of autocomplete
-var availableBusinesses = [
-      "Beijing Inn",
-      "Kings Kitchen",
-      "Taj Cuisine",
-      "Villagio"
-    ]; // Pre-defined array of autocomplete tags
+  // Initialising relevant variables
+  var names = [];
+  var autocompleteArray = [];
+  var source = null;
+  var availableBusinesses = [
+    "Beijing Inn",
+    "Kings Kitchen",
+    "Taj Cuisine",
+    "Villagio"
+  ]; // Pre-defined array of autocomplete tags
 
   // what happens when the user clicks the search button //
   $("#search-btn").click(function() {
-
     $("table").empty();
     // perform an AJAX request
     $.get(
@@ -245,11 +243,9 @@ var availableBusinesses = [
           );
 
           names.push(value.name);
-
         });
 
-        ava = availableBusinesses.concat(names);
-
+        autocompleteArray = availableBusinesses.concat(names);
       },
       "json"
     );
@@ -257,21 +253,21 @@ var availableBusinesses = [
     $("#pages, .pageButtons").hide(); // Hide the buttons as there is only 20 businesses returned at a time
   });
 
-  $( "#business-tags" ).focus(function() {
-    $( "#business-tags" ).autocomplete({
-    source: availableBusinesses
+  // Implementation of autocomplete
+  $("#business-tags").focus(function() {
+    $("#business-tags").autocomplete({
+      source: availableBusinesses
     });
 
-        if (ava.length !== 0) {
-          ava = [... new Set(ava)];
-            // Getter
-            source = $( "#business-tags" ).autocomplete( "option", "source" );
+    if (autocompleteArray.length !== 0) {
+      // Removing duplicates from the autocomplete array
+      autocompleteArray = [...new Set(aautocompleteArray)];
+      // Getter
+      source = $("#business-tags").autocomplete("option", "source");
 
-              // Setter
-            $( "#business-tags" ).autocomplete( "option", "source", ava );
-
-        }
+      // Setter
+      $("#business-tags").autocomplete("option", "source", autocompleteArray);
+    }
   });
   // [Search Functionality with Autocomplete - Add a search input with Autocomplete] // ############################################
-
 }); // End of ready action
