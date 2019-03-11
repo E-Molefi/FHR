@@ -205,20 +205,22 @@ $(function() {
   // [Retrieving the Customer Rating when Requested by the User]  // ##################################################################
 
   // [Search Functionality with Autocomplete - Add a search input with Autocomplete] // ############################################
-  var availableBusinesses = [
-    "Beijing Inn",
-    "Kings Kitchen",
-    "Taj Cuisine",
-    "Villagio"
-  ]; // Pre-defined array of autocomplete tags
-  var businessNamesToAdd = []; // Temporary array to store autocomplete tags for extending the pre-defined array with previous search information
 
-  $("#business-tags").autocomplete({
-    source: availableBusinesses
-  });
+var names = [];
+var ava = [];
+var source = null;
+
+// Implementation of autocomplete
+var availableBusinesses = [
+      "Beijing Inn",
+      "Kings Kitchen",
+      "Taj Cuisine",
+      "Villagio"
+    ]; // Pre-defined array of autocomplete tags
 
   // what happens when the user clicks the search button //
   $("#search-btn").click(function() {
+
     $("table").empty();
     // perform an AJAX request
     $.get(
@@ -241,24 +243,35 @@ $(function() {
               value.ratingDate +
               "</td><td><button class='rating'>Get rating</button></td></tr>"
           );
-          // add the retrieved business names to the temporary array for later addition to the autocomplete array
-          businessNamesToAdd.push(value.name);
+
+          names.push(value.name);
+
         });
 
-        for (var k = 0; k < businessNamesToAdd.length; k++) {
-          if ($.inArray(businessNamesToAdd[k], availableBusinesses) == -1) {
-            // avoiding duplicates
-            // let the array of autocomplete tags be extended with previous search information
-            // add the value to array
-            availableBusinesses.push(businessNamesToAdd[k]);
-          }
-        }
-        availableBusinesses.sort(); // sorting the array
+        ava = availableBusinesses.concat(names);
+
       },
       "json"
     );
 
     $("#pages, .pageButtons").hide(); // Hide the buttons as there is only 20 businesses returned at a time
   });
+
+  $( "#business-tags" ).focus(function() {
+    $( "#business-tags" ).autocomplete({
+    source: availableBusinesses
+    });
+
+        if (ava.length !== 0) {
+          ava = [... new Set(ava)];
+            // Getter
+            source = $( "#business-tags" ).autocomplete( "option", "source" );
+
+              // Setter
+            $( "#business-tags" ).autocomplete( "option", "source", ava );
+
+        }
+  });
   // [Search Functionality with Autocomplete - Add a search input with Autocomplete] // ############################################
+
 }); // End of ready action
